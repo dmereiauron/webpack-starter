@@ -15,13 +15,12 @@ const PATHS = {
   assets: 'assets/'
 }
 
-// Pages const for HtmlWebpackPlugin
-// see more: https://github.com/vedees/webpack-template/blob/master/README.md#html-dir-folder
-const PAGES_DIR = PATHS.src
+// Pages const for Pug
+
+const PAGES_DIR = `${PATHS.src}/pug/pages/`
 const PAGES = fs
   .readdirSync(PAGES_DIR)
-  .filter(fileName => fileName.endsWith('.html'))
-
+  .filter(fileName => fileName.endsWith('.pug'))
 module.exports = {
   externals: {
     paths: PATHS
@@ -58,6 +57,10 @@ module.exports = {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: '/node_modules/'
+      },
+      {
+        test: /\.pug$/,
+        loader: 'pug-loader'
       },
       {
         // Vue
@@ -161,14 +164,6 @@ module.exports = {
         }
       ]
     }),
-
-    /*
-      Automatic creation any html pages (Don't forget to RERUN dev server!)
-      See more:
-      https://github.com/vedees/webpack-template/blob/master/README.md#create-another-html-files
-      Best way to create pages:
-      https://github.com/vedees/webpack-template/blob/master/README.md#third-method-best
-    */
     ...PAGES.map(
       page =>
         new HtmlWebpackPlugin({
